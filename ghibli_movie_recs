@@ -1,0 +1,56 @@
+import discord
+import requests
+import json
+import random
+
+client = discord.Client()
+
+
+#helper func to return movie
+def get_movie():
+    response = requests.get('https://ghibliapi.herokuapp.com/films/')
+    ghibli_title_list = []
+    data = response.json()
+    for ghibli_info in data:
+      ghibli_title_list.append(ghibli_info['title'])  #pulled data
+    return(random.choice(ghibli_title_list))
+
+
+
+@client.event
+async def on_ready():
+    print('We have logged in as {0.user}'.format(client))
+
+
+@client.event
+async def on_message(message):
+    if message.author == client.user:
+        return
+    msg = message.content 
+
+    if msg.startswith('soop?'):
+        await message.channel.send('yes, mother?')
+
+    if msg.startswith('soop no'):
+        await message.channel.send('soop yes')
+
+    if "ghibli" in msg:
+        movie = get_movie()
+        await message.channel.send(movie)
+
+    def watched():
+      watched = False
+      ghibli_title_list = get_movie
+      already_watched = []
+      if "$watched" in msg:
+        watched = True
+        if (watched):
+          already_watched.append(ghibli_title_list)
+        else:
+          return(random.choice(ghibli_title_list))
+
+        
+    
+
+
+client.run(('OTM5Njc1MTc4Mjc3OTUzNTg2.Yf8StA.4pVSuI558fGhnkzWIDZ0IgEyQQQ'))
